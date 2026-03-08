@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tech Talks Today</title>
+  <style>body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.6;
+  margin: 0;
+  background-color: #f4f4f4;
+  color: #333;
+}
+
+header {
+  background-color: #333;
+  color: #fff;
+  padding: 1rem 0;
+  text-align: center;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 2.5rem;
+}
+
+.search-container {
+  padding: 1rem 0;
+}
+
+#searchInput {
+  padding: 0.5rem;
+  width: 50%;
+  max-width: 400px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+#scheduleContainer {
+  width: 80%;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.schedule-item {
+  display: flex;
+  margin-bottom: 1rem;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.time-slot {
+  background-color: #e0e0e0;
+  padding: 1rem;
+  text-align: center;
+  font-weight: bold;
+  min-width: 100px;
+}
+
+.talk-details {
+  padding: 1rem;
+}
+
+.talk-title {
+  margin-top: 0;
+}
+
+.speakers, .category, .description {
+  margin-bottom: 0.5rem;
+}
+
+.category {
+  font-style: italic;
+  color: #555;
+}
+</style>
+</head>
+<body>
+
+  <header>
+    <h1>Tech Talks Today</h1>
+    <p>A 1-Day Virtual Event</p>
+    <div class="search-container">
+      <input type="text" id="searchInput" placeholder="Search by category...">
+    </div>
+  </header>
+
+  <main id="scheduleContainer">
+    <!-- Schedule will be dynamically generated here -->
+  </main>
+
+  <template id="talkTemplate">
+    <div class="schedule-item">
+      <div class="time-slot"></div>
+      <div class="talk-details">
+        <h3 class="talk-title"></h3>
+        <p class="speakers"></p>
+        <p class="category"></p>
+        <p class="description"></p>
+      </div>
+    </div>
+  </template>
+
+  <script>
+const talksData = [
+  {
+    "title": "The Quantum Leap in Machine Learning",
+    "speakers": [
+      "Dr. Evelyn Reed"
+    ],
+    "category": [
+      "AI",
+      "Quantum Computing"
+    ],
+    "duration": 60,
+    "description": "Exploring the synergy between quantum mechanics and machine learning algorithms."
+  },
+  {
+    "title": "Next-Gen Web UIs with WASM",
+    "speakers": [
+      "Chris Patel"
+    ],
+    "category": [
+      "Web Development",
+      "WASM"
+    ],
+    "duration": 60,
+    "description": "A deep dive into using WebAssembly for high-performance web applications."
+  },
+  {
+    "title": "Securing the Cloud-Native Landscape",
+    "speakers": [
+      "Maria Garcia",
+      "John Doe"
+    ],
+    "category": [
+      "Security",
+      "Cloud"
+    ],
+    "duration": 60,
+    "description": "Best practices for securing containerized applications in a cloud-native environment."
+  },
+  {
+    "title": "The Art of Data Storytelling",
+    "speakers": [
+      "Ben Carter"
+    ],
+    "category": [
+      "Data Science",
+      "Visualization"
+    ],
+    "duration": 60,
+    "description": "How to effectively communicate insights from data through compelling narratives."
+  },
+  {
+    "title": "Building Scalable APIs with GraphQL",
+    "speakers": [
+      "Aisha Khan"
+    ],
+    "category": [
+      "APIs",
+      "GraphQL",
+      "Web Development"
+    ],
+    "duration": 60,
+    "description": "A practical guide to designing and building scalable APIs with GraphQL."
+  },
+  {
+    "title": "Ethical AI: Navigating the Future",
+    "speakers": [
+      "Dr. Samuel Jones",
+      "Dr. Lena Petrova"
+    ],
+    "category": [
+      "AI",
+      "Ethics"
+    ],
+    "duration": 60,
+    "description": "A discussion on the ethical considerations and societal impact of artificial intelligence."
+  }
+];
+document.addEventListener('DOMContentLoaded', () => {
+  const scheduleContainer = document.getElementById('scheduleContainer');
+  const talkTemplate = document.getElementById('talkTemplate');
+  const searchInput = document.getElementById('searchInput');
+
+  let talksData = [];
+
+  const formatTime = (date) => {
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  };
+
+  const createSchedule = (talks) => {
+    scheduleContainer.innerHTML = '';
+    let currentTime = new Date('2024-01-01 10:00:00');
+
+    talks.forEach((talk, index) => {
+      const talkElement = talkTemplate.content.cloneNode(true);
+      const timeSlot = talkElement.querySelector('.time-slot');
+      const talkDetails = talkElement.querySelector('.talk-details');
+
+      const startTime = formatTime(currentTime);
+      currentTime.setMinutes(currentTime.getMinutes() + talk.duration);
+      const endTime = formatTime(currentTime);
+
+      timeSlot.textContent = `${startTime} - ${endTime}`;
+      talkDetails.querySelector('.talk-title').textContent = talk.title;
+      talkDetails.querySelector('.speakers').textContent = 'By: ' + talk.speakers.join(', ');
+      talkDetails.querySelector('.category').textContent = 'Category: ' + talk.category.join(', ');
+      talkDetails.querySelector('.description').textContent = talk.description;
+      
+      scheduleContainer.appendChild(talkElement);
+
+      // Add lunch break
+      if (index === 2) {
+        const lunchElement = talkTemplate.content.cloneNode(true);
+        const lunchTimeSlot = lunchElement.querySelector('.time-slot');
+        const lunchDetails = lunchElement.querySelector('.talk-details');
+
+        const lunchStartTime = formatTime(currentTime);
+        currentTime.setMinutes(currentTime.getMinutes() + 60);
+        const lunchEndTime = formatTime(currentTime);
+
+        lunchTimeSlot.textContent = `${lunchStartTime} - ${lunchEndTime}`;
+        lunchDetails.querySelector('.talk-title').textContent = 'Lunch Break';
+        lunchDetails.querySelector('.speakers').textContent = '';
+        lunchDetails.querySelector('.category').textContent = '';
+        lunchDetails.querySelector('.description').textContent = '';
+        scheduleContainer.appendChild(lunchElement);
+      }
+      
+      // Add transition break
+      if (index < talks.length -1 && index !==2) {
+        currentTime.setMinutes(currentTime.getMinutes() + 10);
+      }
+    });
+  };
+
+  createSchedule(talksData);
+
+  searchInput.addEventListener('input', () => {
+    const searchTerm = searchInput.value.toLowerCase();
+    const filteredTalks = talksData.filter(talk => {
+      return talk.category.some(category => category.toLowerCase().includes(searchTerm));
+    });
+    if (searchInput.value) {
+        createSchedule(filteredTalks);
+    } else {
+        createSchedule(talksData);
+    }
+  });
+});
+</script>
+</body>
+</html>

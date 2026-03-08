@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tech Talks Today</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header>
+    <h1>Tech Talks Today</h1>
+    <p>A 1-Day Virtual Event</p>
+    <div class="search-container">
+      <input type="text" id="searchInput" placeholder="Search by category...">
+    </div>
+  </header>
+
+  <main id="scheduleContainer">
+    <!-- Schedule will be dynamically generated here -->
+  </main>
+
+  <template id="talkTemplate">
+    <div class="schedule-item">
+      <div class="time-slot"></div>
+      <div class="talk-details">
+        <h3 class="talk-title"></h3>
+        <p class="speakers"></p>
+        <p class="category"></p>
+        <p class="description"></p>
+      </div>
+    </div>
+  </template>
+
+  <script src="script.js"></script>
+</body>
+</html>
